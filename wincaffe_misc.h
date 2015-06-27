@@ -13,7 +13,6 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys\stat.h>
-#include <getopt.h>
 #include <windows.h>
 #include <stdio.h>
 
@@ -162,5 +161,11 @@ _END_EXTERN_C
 	
 #define __builtin_popcount __popcnt
 #define __builtin_popcountl __popcnt64
+
+#include <direct.h> 
+#define mkdir(directory,permission) _mkdir(directory)
+
+#undef max
+#undef min
 
 #endif  // __WINCAFFE_MISC_H_
