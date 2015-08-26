@@ -106,8 +106,43 @@ EXPRESSLY ADVISED OF THE POSSIBILITY OF SUCH DAMAGES.
 
 	#include <string.h>
 	#include <wchar.h>
+	
+	#define	SIGHUP	1	/* hangup */
+	#define	SA_RESTART	0x00000004
+
+	union sigval {
+		int sival_int;
+		void *sival_ptr;
+	};
+
+	typedef struct {
+		int si_signo;
+		int si_code;
+		union sigval si_value;
+		int si_errno;
+		int si_pid;
+		int si_uid;
+		void *si_addr;
+		int si_status;
+		int si_band;
+	} siginfo_t;
+
+	typedef struct {		/* signal set type */
+		unsigned long	__sigbits[4];
+	} sigset_t;
+
+	struct sigaction {
+		void(*sa_handler)(int);
+		void(*sa_sigaction)(int, siginfo_t *, void *);
+		sigset_t   sa_mask;
+		int        sa_flags;
+		void(*sa_restorer)(void);
+	};
 
 _BEGIN_EXTERN_C
+
+	extern int sigaction(int sig, struct sigaction *in, struct sigaction *out);
+	extern int sigfillset(sigset_t *set);
 
 	extern _GETOPT_API int optind;
 	extern _GETOPT_API int opterr;
